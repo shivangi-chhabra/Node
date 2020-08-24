@@ -1,0 +1,23 @@
+{
+  "name": "nodeex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "newapp.js",
+  "scripts": {
+    "server": "nodemon newapp.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shivangi-chhabra/Node.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shivangi-chhabra/Node/issues"
+  },
+  "homepage": "https://github.com/shivangi-chhabra/Node#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4"
+  }
+}
