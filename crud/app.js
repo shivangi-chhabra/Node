@@ -1,0 +1,21 @@
+const express = require('express')
+
+const mongoose = require('mongoose')
+const url      = 'mongodb://localhost/techDBex'
+
+const app = express()
+
+mongoose.connect(url,{useNewUrlParser:true})
+const con = mongoose.connection
+
+con.on('open', () => {
+    console.log('connected...')
+})
+
+const techRouter = require('./routes/tech')
+app.use('/tech', techRouter)
+
+
+app.listen(9000, () => {
+    console.log('Server stated')
+})
