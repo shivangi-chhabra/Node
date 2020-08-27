@@ -12,6 +12,8 @@ con.on('open', () => {
     console.log('connected...')
 })
 
+app.use(express.json())
+
 const techRouter = require('./routes/tech')
 app.use('/tech', techRouter)
 
