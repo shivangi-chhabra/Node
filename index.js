@@ -16,6 +16,8 @@ app.get('/task', function(req, res) {
         res.json(tasks)  
     })
 })
+
+app.post
 server.listen(3000, function() {
 
     console.log('Listening to the server port: 3000')
