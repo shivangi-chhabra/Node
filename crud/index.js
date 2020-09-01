@@ -1,11 +1,21 @@
-const mongoose = require('mongoose')
+const  connection = require('./models')
 
-mongoose.connect('mongodb://localhost/testDB', {useNewUrlParser:true}, (error)=>{
-    if (!error){
-        console.log('success!!!')
-    } else {
-        console.log('error while connecting with database')         
-    }
+const express = require('express')
+
+const app = express()
+
+const path = require('path')
+const bodyParser = require('body-parser')
+const expressHandlebars = require('express-handlebars')
+const { urlencoded } = require('express')
+const { Console } = require('console')
+
+app.use(bodyParser, urlencoded({extended : true}))
+
+app.get('/', (req, res) => {
+    res.send('<h1>Hello World!!</h1>')
 })
 
-
+app.listen('3000', () => {
+    console.log('Server Started')
+})

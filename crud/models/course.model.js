@@ -13,6 +13,8 @@ var courseSchema = mongoose.Schema({
         type : String
     },
     courseFee : {
-        type : String
+        type : String   
     }
 })
+
+mongoose.model("course", courseSchema)
