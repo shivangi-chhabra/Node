@@ -9,4 +9,4 @@ mongoose.connect('mongodb://localhost/testDB', {useNewUrlParser:true}, (error)=>
 })
 
 
-const Course = require('./course.model')
+const course = require('./course.model')
