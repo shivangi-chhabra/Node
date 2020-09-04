@@ -9,4 +9,4 @@ mongoose.connect('mongodb://localhost/testDB', {useNewUrlParser:true, useUnified
 })
 
 
-const course = require('./course.model')
+const courses = require('./course.model')
