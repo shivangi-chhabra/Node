@@ -2,13 +2,12 @@ const express = require('express')
 const mongoose = require('mongoose')
 
 const router = express.Router()
-const courseModel = mongoose.model("course")
+const CourseModel = mongoose.model("course")
 
 router.get('/list', (req, res)=> {
-       courseModel.find((err, docs) => {
+       CourseModel.find({},(err, docs) => {
             if (!err) {
-                console.log(docs)
-                res.send('Course Controller')   
+                res.render('list', { data : docs })  
             } else {
                 res.send('Error')
             }
