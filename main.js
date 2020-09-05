@@ -3,6 +3,8 @@ var bodyParser = require('body-parser')
 var mongoose = require('mongoose')
 var User = require('./models/User')
 var db = require('./mysetup/myurl').myurl
+var bcrypt = require('bcrypt')
+var saltRouds = 10
 var app = express();
 
 var port = process.env.PORT || 3000
@@ -10,7 +12,7 @@ var port = process.env.PORT || 3000
 app.use(bodyParser.urlencoded({ extended : false}));
 app.use(bodyParser.json())
 
-mongoose.connect(db)
+mongoose.connect(db,{useNewUrlParser:true, useUnifiedTopology: true})
         .then(()=>{
             console.log("Database is connected")
         })
@@ -35,13 +37,21 @@ app.post("/signup", async (req, res) => {
      await User.findOne({ username: newUser.username})
                .then(async profile => {
                    if (!profile) {
-                       await newUser.save()
-                                    .then(() => {
-                                        res.status(200).send(newUser)
-                                    })
-                                    .catch(err => {
-                                        console.log("error is ", err.message)
-                                    })
+                       bcrypt.hash(newUser.password, saltRouds, async (err, hash) => {
+                           if (err) {
+                               console.log("Error is ", err.message)
+                           } else {
+                               newUser.password = hash
+                               await newUser.save()
+                               .then(() => {
+                                   res.status(200).send(newUser)
+                               })
+                               .catch(err => {
+                                   console.log("error is ", err.message)
+                               })
+                           }
+                       })
+                      
                    } else {
                        res.send("User already exists...")
                    }
@@ -62,11 +72,19 @@ app.post("/login", async (req, res) => {
                   if (!profile){
                     res.send("User not exist")
                   } else {
-                      if (profile.password == newUser.password){
-                          res.send("User authenticated")
-                      } else {
-                          res.send("User Unauthorized")
-                      }
+                      bcrypt.compare(newUser.password, profile.password,
+                        async (err, result) => {
+                            if (err) {
+                                console.log("error is ", err.message)
+                            } else if (result == true) {
+                              res.send("User authenticated")
+                            } else {
+                              res.send("User Unauthorized Access")
+                          }
+                        }
+                      )
+                      
+              
                   }
                   
               })
