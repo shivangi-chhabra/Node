@@ -38,6 +38,29 @@ app.post("/signup", async (req, res) => {
 })
 
 
+app.post("/login", async (req, res) => {
+    var newUser = {};
+    newUser.username = req.body.username,
+    newUser.password = req.body.password
+
+    await User.findOne({ username: newUser.username})
+              .then(profile => {
+                  if (!profile){
+                    res.send("User not exist")
+                  } else {
+                      if (profile.password == newUser.password){
+                          res.send("User authenticated")
+                      } else {
+                          res.send("User Unauthorized")
+                      }
+                  }
+                  
+              })
+              .catch(err => {
+                  console.log('Error is ', err.message)
+              })
+})
+
 
 app.listen(port, ()=>{
     console.log('Server is satarted on port ${port}')
