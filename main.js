@@ -28,10 +28,24 @@ app.post("/signup", async (req, res) => {
         email : req.body.email,
         password : req.body.password
     })
-    await newUser.save()
+    /*await newUser.save()
              .then(()=>{
                  res.status(200).send(newUser)
-             })
+             })*/
+     await User.findOne({ username: newUser.username})
+               .then(async profile => {
+                   if (!profile) {
+                       await newUser.save()
+                                    .then(() => {
+                                        res.status(200).send(newUser)
+                                    })
+                                    .catch(err => {
+                                        console.log("error is ", err.message)
+                                    })
+                   } else {
+                       res.send("User already exists...")
+                   }
+               })        
              .catch(err => {
                  console.log("Error is ", err.message)
              })
