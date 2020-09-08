@@ -127,6 +127,18 @@ app.post("/login", async (req, res) => {
               })
 })
 
+app.get(
+    "/profile",
+    passport.authenticate("jwt", { session: false }),
+    (req, res) => {
+      console.log(req);
+      res.json({
+        id: req.user.id,
+        username: req.user.username
+      });
+    }
+  );
+
 
 app.listen(port, ()=>{
     console.log('Server is satarted on port ${port}')
