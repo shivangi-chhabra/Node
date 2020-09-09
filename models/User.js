@@ -1,6 +1,7 @@
 // models/User.js
 
 var mongoose = require('mongoose')
+var bcrypt = require("bcrypt");
 const UserSchema = mongoose.Schema({
     username: {
         type : String,
@@ -15,5 +16,7 @@ const UserSchema = mongoose.Schema({
         require : true
     }
 })
+
+
 
 module.exports = user = mongoose.model('UserSchema', UserSchema)
