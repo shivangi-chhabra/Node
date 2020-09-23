@@ -7,6 +7,8 @@ require('./helpers/init_mongodb')
 const app = express()
 
 app.use(morgan('dev'))
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 
 const authRoute = require('./routes/auth.route')
 
