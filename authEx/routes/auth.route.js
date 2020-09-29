@@ -3,21 +3,28 @@ const router  = express.Router()
 const createError = require('http-errors')
 const tUser = require('../Models/user.model')
 
+const {authSchema}  = require('../helpers/validation_schema')
+
 router.post('/register', async (req, res, next) => {
     console.log(req.body)
     try { 
-        const {email, password} = req.body
-        if(!email || !password) throw createError.BadRequest()
-        const doesExist = await tUser.findOne({email: email})
-        if(doesExist) throw createError.Conflict('${ email } is already taken')
+        //const {email, password} = req.body
+        //if(!email || !password) throw createError.BadRequest()
+  
+        const result = await authSchema.validateAsync(req.body)
+        console.log(result)
 
-        const user =  new tUser({email, password})
+        const doesExist = await tUser.findOne({email: result.email})
+        if(doesExist) throw createError.Conflict('${ result.email } is already taken')
+
+        const user =  new tUser(result)
         const savedUser = await user.save()
 
         res.send(savedUser)
 
         
     } catch (error) {
+        if (error.isJoi === true) error.status = 422 
         next(error)
     }
 })

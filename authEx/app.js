@@ -3,8 +3,22 @@ const morgan  = require('morgan')
 const createError = require('http-errors')
 require('dotenv').config()
 require('./helpers/init_mongodb')
+const email = require("./routes/email")
+
+
 
 const app = express()
+
+app.use((req,res,next)=>{
+    res.header('Access-Control-Allow-Origin','*');
+    res.header('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    );
+    if (req.method ==='OPTIONS') {
+        res.header('Access-Control-Allow-Methods','PUT, POST, PATCH, DELETE, GET');
+        return res.status(200).json({})
+    }
+    next();
+})
 
 app.use(morgan('dev'))
 app.use(express.json())
@@ -15,6 +29,8 @@ const authRoute = require('./routes/auth.route')
 app.get('/', async (req, res, next) => {
     res.send('Welcome!')
 })
+
+app.use('/email', email)
 
 app.use('/auth', authRoute)
 
